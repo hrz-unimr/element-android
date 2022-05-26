@@ -370,7 +370,7 @@ class OnboardingViewModel @AssistedInject constructor(
                 setState {
                     copy(
                             isLoading = false,
-                            resetPasswordEmail = null
+                            resetState = ResetState()
                     )
                 }
             }
@@ -457,7 +457,7 @@ class OnboardingViewModel @AssistedInject constructor(
                 setState {
                     copy(
                             isLoading = false,
-                            resetPasswordEmail = action.email
+                            resetState = ResetState(email = action.email)
                     )
                 }
 
@@ -486,7 +486,7 @@ class OnboardingViewModel @AssistedInject constructor(
                 setState {
                     copy(
                             isLoading = false,
-                            resetPasswordEmail = null
+                            resetState = ResetState()
                     )
                 }
 
