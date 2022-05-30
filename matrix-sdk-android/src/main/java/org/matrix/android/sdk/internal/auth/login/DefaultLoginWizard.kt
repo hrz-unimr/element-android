@@ -102,7 +102,7 @@ internal class DefaultLoginWizard(
         return sessionCreator.createSession(credentials, pendingSessionData.homeServerConnectionConfig)
     }
 
-    override suspend fun resetPassword(email: String, newPassword: String?) {
+    override suspend fun resetPassword(email: String) {
         val param = RegisterAddThreePidTask.Params(
                 RegisterThreePid.Email(email),
                 pendingSessionData.clientSecret,
@@ -116,18 +116,17 @@ internal class DefaultLoginWizard(
             authAPI.resetPassword(AddThreePidRegistrationParams.from(param))
         }
 
-        pendingSessionData = pendingSessionData.copy(resetPasswordData = ResetPasswordData(newPassword, result))
+        pendingSessionData = pendingSessionData.copy(resetPasswordData = ResetPasswordData(result))
                 .also { pendingSessionStore.savePendingSessionData(it) }
     }
 
-    override suspend fun resetPasswordMailConfirmed(newPassword: String?) {
-        val param = pendingSessionData.readResetPasswordDataOrThrow(newPassword).let { (response, password) ->
-            ResetPasswordMailConfirmed.create(
-                    pendingSessionData.clientSecret,
-                    response.sid,
-                    password
-            )
-        }
+    override suspend fun resetPasswordMailConfirmed(newPassword: String) {
+        val resetPasswordData = pendingSessionData.resetPasswordData ?: throw IllegalStateException("Developer error - Must call resetPassword first")
+        val param = ResetPasswordMailConfirmed.create(
+                pendingSessionData.clientSecret,
+                resetPasswordData.addThreePidRegistrationResponse.sid,
+                newPassword
+        )
 
         executeRequest(null) {
             authAPI.resetPasswordMailConfirmed(param)
@@ -135,15 +134,5 @@ internal class DefaultLoginWizard(
 
         // Set to null?
         // resetPasswordData = null
-    }
-
-    private fun PendingSessionData.readResetPasswordDataOrThrow(newPassword: String?): Pair<AddThreePidRegistrationResponse, String> {
-        return when (resetPasswordData) {
-            null -> throw IllegalStateException("developer error, no reset password in progress")
-            else -> {
-                val password = newPassword ?: resetPasswordData.newPassword ?: throw IllegalStateException("developer error, no new password set")
-                resetPasswordData.addThreePidRegistrationResponse to password
-            }
-        }
     }
 }

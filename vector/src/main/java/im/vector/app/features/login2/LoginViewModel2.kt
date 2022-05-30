@@ -390,7 +390,8 @@ class LoginViewModel2 @AssistedInject constructor(
             LoginAction2.ResetResetPassword -> {
                 setState {
                     copy(
-                            resetPasswordEmail = null
+                            resetPasswordEmail = null,
+                            resetPasswordNewPassword = null
                     )
                 }
             }
@@ -441,7 +442,7 @@ class LoginViewModel2 @AssistedInject constructor(
 
             currentJob = viewModelScope.launch {
                 try {
-                    safeLoginWizard.resetPassword(action.email, action.newPassword)
+                    safeLoginWizard.resetPassword(action.email)
                 } catch (failure: Throwable) {
                     _viewEvents.post(LoginViewEvents2.Failure(failure))
                     setState { copy(isLoading = false) }
@@ -451,7 +452,8 @@ class LoginViewModel2 @AssistedInject constructor(
                 setState {
                     copy(
                             isLoading = false,
-                            resetPasswordEmail = action.email
+                            resetPasswordEmail = action.email,
+                            resetPasswordNewPassword = action.newPassword
                     )
                 }
 
@@ -470,7 +472,8 @@ class LoginViewModel2 @AssistedInject constructor(
 
             currentJob = viewModelScope.launch {
                 try {
-                    safeLoginWizard.resetPasswordMailConfirmed()
+                    val state = awaitState()
+                    safeLoginWizard.resetPasswordMailConfirmed(state.resetPasswordNewPassword!!)
                 } catch (failure: Throwable) {
                     _viewEvents.post(LoginViewEvents2.Failure(failure))
                     setState { copy(isLoading = false) }
@@ -479,7 +482,8 @@ class LoginViewModel2 @AssistedInject constructor(
                 setState {
                     copy(
                             isLoading = false,
-                            resetPasswordEmail = null
+                            resetPasswordEmail = null,
+                            resetPasswordNewPassword = null
                     )
                 }
 

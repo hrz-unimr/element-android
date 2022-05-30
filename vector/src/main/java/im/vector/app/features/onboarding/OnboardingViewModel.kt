@@ -447,7 +447,7 @@ class OnboardingViewModel @AssistedInject constructor(
 
             currentJob = viewModelScope.launch {
                 try {
-                    safeLoginWizard.resetPassword(action.email, action.newPassword)
+                    safeLoginWizard.resetPassword(action.email)
                 } catch (failure: Throwable) {
                     setState { copy(isLoading = false) }
                     _viewEvents.post(OnboardingViewEvents.Failure(failure))
@@ -457,7 +457,7 @@ class OnboardingViewModel @AssistedInject constructor(
                 setState {
                     copy(
                             isLoading = false,
-                            resetState = ResetState(email = action.email)
+                            resetState = ResetState(email = action.email, newPassword = action.newPassword)
                     )
                 }
 
@@ -477,7 +477,8 @@ class OnboardingViewModel @AssistedInject constructor(
 
             currentJob = viewModelScope.launch {
                 try {
-                    safeLoginWizard.resetPasswordMailConfirmed()
+                    val state = awaitState()
+                    safeLoginWizard.resetPasswordMailConfirmed(state.resetState.newPassword!!)
                 } catch (failure: Throwable) {
                     setState { copy(isLoading = false) }
                     _viewEvents.post(OnboardingViewEvents.Failure(failure))
