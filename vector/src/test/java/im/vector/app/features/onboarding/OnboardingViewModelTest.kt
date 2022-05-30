@@ -50,6 +50,7 @@ import org.matrix.android.sdk.api.auth.registration.FlowResult
 import org.matrix.android.sdk.api.auth.registration.Stage
 import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.homeserver.HomeServerCapabilities
+import org.matrix.android.sdk.internal.auth.login.ResetCapabilities
 
 private const val A_DISPLAY_NAME = "a display name"
 private const val A_PICTURE_FILENAME = "a-picture.png"
@@ -66,6 +67,7 @@ private val A_HOMESERVER_CONFIG = HomeServerConnectionConfig(FakeUri().instance)
 private val SELECTED_HOMESERVER_STATE = SelectedHomeserverState(preferredLoginMode = LoginMode.Password)
 private const val AN_EMAIL = "hello@example.com"
 private const val A_PASSWORD = "a-password"
+private val A_RESET_CAPABILITIES = ResetCapabilities(supportsLogoutAllDevices = true)
 
 class OnboardingViewModelTest {
 
@@ -448,7 +450,7 @@ class OnboardingViewModelTest {
     @Test
     fun `given can successfully reset password, when resetting password, then emits reset done event`() = runTest {
         val test = viewModel.test()
-        fakeLoginWizard.givenResetPasswordSuccess(AN_EMAIL)
+        fakeLoginWizard.givenResetPasswordSuccess(AN_EMAIL, A_RESET_CAPABILITIES)
         fakeAuthenticationService.givenLoginWizard(fakeLoginWizard)
 
         viewModel.handle(OnboardingAction.ResetPassword(email = AN_EMAIL, newPassword = A_PASSWORD))
@@ -457,7 +459,10 @@ class OnboardingViewModelTest {
                 .assertStatesChanges(
                         initialState,
                         { copy(isLoading = true) },
-                        { copy(isLoading = false, resetState = ResetState(AN_EMAIL, A_PASSWORD)) }
+                        {
+                            val resetState = ResetState(AN_EMAIL, A_PASSWORD, supportsLogoutAllDevices = A_RESET_CAPABILITIES.supportsLogoutAllDevices)
+                            copy(isLoading = false, resetState = resetState)
+                        }
                 )
                 .assertEvents(OnboardingViewEvents.OnResetPasswordSendThreePidDone)
                 .finish()
