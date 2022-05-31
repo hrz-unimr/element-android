@@ -769,7 +769,6 @@ internal class MXOlmDevice @Inject constructor(
         val sessionHolder = getInboundGroupSession(sessionId, senderKey, roomId)
         val wrapper = sessionHolder.wrapper
         val inboundGroupSession = wrapper.session
-                ?: throw MXCryptoError.Base(MXCryptoError.ErrorType.UNABLE_TO_DECRYPT, "Session is null")
         if (roomId != wrapper.roomId) {
             // Check that the room id matches the original one for the session. This stops
             // the HS pretending a message was targeting a different room.
