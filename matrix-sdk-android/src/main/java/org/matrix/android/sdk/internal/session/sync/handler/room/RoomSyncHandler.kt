@@ -213,7 +213,7 @@ internal class RoomSyncHandler @Inject constructor(
         val isInitialSync = insertType == EventInsertType.INITIAL_SYNC
 
         val ephemeralResult = (roomSync.ephemeral as? LazyRoomSyncEphemeral.Parsed)
-                ?._roomSyncEphemeral
+                ?.roomSyncEphemeral
                 ?.events
                 ?.takeIf { it.isNotEmpty() }
                 ?.let { handleEphemeral(realm, roomId, it, insertType == EventInsertType.INITIAL_SYNC, aggregator) }
@@ -520,9 +520,10 @@ internal class RoomSyncHandler @Inject constructor(
 
     private fun decryptIfNeeded(event: Event, roomId: String) {
         try {
+            val timelineId = generateTimelineId(roomId)
             // Event from sync does not have roomId, so add it to the event first
             // note: runBlocking should be used here while we are in realm single thread executor, to avoid thread switching
-            val result = runBlocking { cryptoService.decryptEvent(event.copy(roomId = roomId), "") }
+            val result = runBlocking { cryptoService.decryptEvent(event.copy(roomId = roomId), timelineId) }
             event.mxDecryptionResult = OlmDecryptionResult(
                     payload = result.clearEvent,
                     senderKey = result.senderCurve25519Key,
@@ -535,6 +536,10 @@ internal class RoomSyncHandler @Inject constructor(
                 event.mCryptoErrorReason = e.technicalMessage.takeIf { it.isNotEmpty() } ?: e.detailedErrorDescription
             }
         }
+    }
+
+    private fun generateTimelineId(roomId: String): String {
+        return "RoomSyncHandler$roomId"
     }
 
     data class EphemeralResult(

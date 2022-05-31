@@ -59,7 +59,7 @@ import org.matrix.android.sdk.api.session.room.model.create.CreateRoomParams
 import org.matrix.android.sdk.api.session.room.model.message.MessageContent
 import org.matrix.android.sdk.api.session.room.roomSummaryQueryParams
 import org.matrix.android.sdk.api.session.securestorage.EmptyKeySigner
-import org.matrix.android.sdk.api.session.securestorage.SharedSecretStorageService
+import org.matrix.android.sdk.api.session.securestorage.KeyRef
 import org.matrix.android.sdk.api.util.Optional
 import org.matrix.android.sdk.api.util.awaitCallback
 import org.matrix.android.sdk.api.util.toBase64NoPadding
@@ -67,7 +67,7 @@ import java.util.UUID
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 
-class CryptoTestHelper(private val testHelper: CommonTestHelper) {
+class CryptoTestHelper(val testHelper: CommonTestHelper) {
 
     private val messagesFromAlice: List<String> = listOf("0 - Hello I'm Alice!", "4 - Go!")
     private val messagesFromBob: List<String> = listOf("1 - Hello I'm Bob!", "2 - Isn't life grand?", "3 - Let's go to the opera.")
@@ -207,15 +207,47 @@ class CryptoTestHelper(private val testHelper: CommonTestHelper) {
         val roomFromAlicePOV = aliceSession.getRoom(aliceRoomId)!!
 
         // Alice sends a message
-        testHelper.sendTextMessage(roomFromAlicePOV, messagesFromAlice[0], 1)
+        testHelper.sendTextMessage(roomFromAlicePOV, messagesFromAlice[0], 1).first().eventId.let { sentEventId ->
+            // ensure bob got it
+            ensureEventReceived(aliceRoomId, sentEventId, bobSession, true)
+        }
 
         // Bob send 3 messages
-        testHelper.sendTextMessage(roomFromBobPOV, messagesFromBob[0], 1)
-        testHelper.sendTextMessage(roomFromBobPOV, messagesFromBob[1], 1)
-        testHelper.sendTextMessage(roomFromBobPOV, messagesFromBob[2], 1)
+        testHelper.sendTextMessage(roomFromBobPOV, messagesFromBob[0], 1).first().eventId.let { sentEventId ->
+            // ensure alice got it
+            ensureEventReceived(aliceRoomId, sentEventId, aliceSession, true)
+        }
+
+        testHelper.sendTextMessage(roomFromBobPOV, messagesFromBob[1], 1).first().eventId.let { sentEventId ->
+            // ensure alice got it
+            ensureEventReceived(aliceRoomId, sentEventId, aliceSession, true)
+        }
+        testHelper.sendTextMessage(roomFromBobPOV, messagesFromBob[2], 1).first().eventId.let { sentEventId ->
+            // ensure alice got it
+            ensureEventReceived(aliceRoomId, sentEventId, aliceSession, true)
+        }
+
         // Alice sends a message
-        testHelper.sendTextMessage(roomFromAlicePOV, messagesFromAlice[1], 1)
+        testHelper.sendTextMessage(roomFromAlicePOV, messagesFromAlice[1], 1).first().eventId.let { sentEventId ->
+            // ensure bob got it
+            ensureEventReceived(aliceRoomId, sentEventId, bobSession, true)
+        }
         return cryptoTestData
+    }
+
+    private fun ensureEventReceived(roomId: String, eventId: String, session: Session, andCanDecrypt: Boolean) {
+        testHelper.waitWithLatch { latch ->
+            testHelper.retryPeriodicallyWithLatch(latch) {
+                val timeLineEvent = session.getRoom(roomId)?.timelineService()?.getTimelineEvent(eventId)
+                if (andCanDecrypt) {
+                    timeLineEvent != null &&
+                            timeLineEvent.isEncrypted() &&
+                            timeLineEvent.root.getClearType() == EventType.MESSAGE
+                } else {
+                    timeLineEvent != null
+                }
+            }
+        }
     }
 
     fun checkEncryptedEvent(event: Event, roomId: String, clearMessage: String, senderSession: Session) {
@@ -333,19 +365,19 @@ class CryptoTestHelper(private val testHelper: CommonTestHelper) {
             ssssService.storeSecret(
                     MASTER_KEY_SSSS_NAME,
                     session.cryptoService().crossSigningService().getCrossSigningPrivateKeys()!!.master!!,
-                    listOf(SharedSecretStorageService.KeyRef(keyInfo.keyId, keyInfo.keySpec))
+                    listOf(KeyRef(keyInfo.keyId, keyInfo.keySpec))
             )
 
             ssssService.storeSecret(
                     SELF_SIGNING_KEY_SSSS_NAME,
                     session.cryptoService().crossSigningService().getCrossSigningPrivateKeys()!!.selfSigned!!,
-                    listOf(SharedSecretStorageService.KeyRef(keyInfo.keyId, keyInfo.keySpec))
+                    listOf(KeyRef(keyInfo.keyId, keyInfo.keySpec))
             )
 
             ssssService.storeSecret(
                     USER_SIGNING_KEY_SSSS_NAME,
                     session.cryptoService().crossSigningService().getCrossSigningPrivateKeys()!!.user!!,
-                    listOf(SharedSecretStorageService.KeyRef(keyInfo.keyId, keyInfo.keySpec))
+                    listOf(KeyRef(keyInfo.keyId, keyInfo.keySpec))
             )
 
             // set up megolm backup
@@ -362,7 +394,7 @@ class CryptoTestHelper(private val testHelper: CommonTestHelper) {
                 ssssService.storeSecret(
                         KEYBACKUP_SECRET_SSSS_NAME,
                         secret,
-                        listOf(SharedSecretStorageService.KeyRef(keyInfo.keyId, keyInfo.keySpec))
+                        listOf(KeyRef(keyInfo.keyId, keyInfo.keySpec))
                 )
             }
         }
@@ -385,9 +417,9 @@ class CryptoTestHelper(private val testHelper: CommonTestHelper) {
 
         testHelper.waitWithLatch {
             testHelper.retryPeriodicallyWithLatch(it) {
-                    bobVerificationService.getExistingVerificationRequests(alice.myUserId).firstOrNull {
-                        it.requestInfo?.fromDevice == alice.sessionParams.deviceId
-                    } != null
+                bobVerificationService.getExistingVerificationRequests(alice.myUserId).firstOrNull {
+                    it.requestInfo?.fromDevice == alice.sessionParams.deviceId
+                } != null
             }
         }
         val incomingRequest = bobVerificationService.getExistingVerificationRequests(alice.myUserId).first {
@@ -415,7 +447,8 @@ class CryptoTestHelper(private val testHelper: CommonTestHelper) {
                 requestID!!,
                 roomId,
                 bob.myUserId,
-                bob.sessionParams.credentials.deviceId!!)
+                bob.sessionParams.credentials.deviceId!!
+        )
 
         // we should reach SHOW SAS on both
         var alicePovTx: OutgoingSasVerificationTransaction? = null

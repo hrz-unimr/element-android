@@ -80,6 +80,7 @@ internal class MXMegolmDecryption(
                     encryptedEventContent.ciphertext,
                     event.roomId,
                     timeline,
+                    eventId = event.eventId.orEmpty(),
                     encryptedEventContent.sessionId,
                     encryptedEventContent.senderKey
             )
@@ -179,6 +180,7 @@ internal class MXMegolmDecryption(
      * Handle a key event.
      *
      * @param event the key event.
+     * @param defaultKeysBackupService the keys backup service
      */
     override fun onRoomKeyEvent(event: Event, defaultKeysBackupService: DefaultKeysBackupService) {
         Timber.tag(loggerTag.value).v("onRoomKeyEvent()")
@@ -306,7 +308,7 @@ internal class MXMegolmDecryption(
     }
 
     /**
-     * Check if the some messages can be decrypted with a new session
+     * Check if the some messages can be decrypted with a new session.
      *
      * @param roomId the room id where the new Megolm session has been created for, may be null when importing from external sessions
      * @param senderKey the session sender key

@@ -46,8 +46,8 @@ internal class MegolmSessionDataImporter @Inject constructor(
      * Must be call on the crypto coroutine thread
      *
      * @param megolmSessionsData megolm sessions.
-     * @param fromBackup         true if the imported keys are already backed up on the server.
-     * @param progressListener   the progress listener
+     * @param fromBackup true if the imported keys are already backed up on the server.
+     * @param progressListener the progress listener
      * @return import room keys result
      */
     @WorkerThread

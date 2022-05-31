@@ -80,7 +80,7 @@ internal class MXMegolmEncryption(
     }
 
     // Default rotation periods
-    // TODO: Make it configurable via parameters
+    // TODO Make it configurable via parameters
     // Session rotation periods
     private var sessionRotationPeriodMsgs: Int = 100
     private var sessionRotationPeriodMs: Int = 7 * 24 * 3600 * 1000
@@ -174,7 +174,7 @@ internal class MXMegolmEncryption(
     }
 
     /**
-     * Ensure the outbound session
+     * Ensure the outbound session.
      *
      * @param devicesInRoom the devices list
      */
@@ -212,9 +212,9 @@ internal class MXMegolmEncryption(
     }
 
     /**
-     * Share the device key to a list of users
+     * Share the device key to a list of users.
      *
-     * @param session        the session info
+     * @param session the session info
      * @param devicesByUsers the devices map
      */
     private suspend fun shareKey(session: MXOutboundSessionInfo,
@@ -241,9 +241,9 @@ internal class MXMegolmEncryption(
     }
 
     /**
-     * Share the device keys of a an user
+     * Share the device keys of a an user.
      *
-     * @param sessionInfo       the session info
+     * @param session the session info
      * @param devicesByUser the devices map
      */
     private suspend fun shareUserDevicesKey(sessionInfo: MXOutboundSessionInfo,
@@ -375,7 +375,7 @@ internal class MXMegolmEncryption(
     }
 
     /**
-     * process the pending encryptions
+     * process the pending encryptions.
      */
     private fun encryptContent(session: MXOutboundSessionInfo, eventType: String, eventContent: Content): Content {
         // Everything is in place, encrypt all pending events
@@ -406,7 +406,7 @@ internal class MXMegolmEncryption(
      * Get the list of devices which can encrypt data to.
      * This method must be called in getDecryptingThreadHandler() thread.
      *
-     * @param userIds  the user ids whose devices must be checked.
+     * @param userIds the user ids whose devices must be checked.
      */
     private suspend fun getDevicesInRoom(userIds: List<String>): DeviceInRoomInfo {
         // We are happy to use a cached version here: we assume that if we already
