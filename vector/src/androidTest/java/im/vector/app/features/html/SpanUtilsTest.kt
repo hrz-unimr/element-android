@@ -29,6 +29,7 @@ import im.vector.app.InstrumentedTest
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeTrue
 import org.junit.FixMethodOrder
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -38,6 +39,7 @@ import java.util.concurrent.TimeUnit
 
 @RunWith(JUnit4::class)
 @FixMethodOrder(MethodSorters.JVM)
+@Ignore
 class SpanUtilsTest : InstrumentedTest {
 
     private val spanUtils = SpanUtils {
@@ -138,7 +140,7 @@ class SpanUtilsTest : InstrumentedTest {
             }
         })
         EmojiCompat.init(context())
-        latch.await(30, TimeUnit.SECONDS)
+        latch.await(60, TimeUnit.SECONDS)
 	if (thrown != null) {
 	   // rethrow here rather than in the callback; test will handle it better.
 	   throw Throwable(thrown)
