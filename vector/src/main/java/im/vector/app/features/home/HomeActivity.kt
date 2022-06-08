@@ -128,6 +128,7 @@ class HomeActivity :
     @Inject lateinit var initSyncStepFormatter: InitSyncStepFormatter
     @Inject lateinit var appStateHandler: AppStateHandler
     @Inject lateinit var unifiedPushHelper: UnifiedPushHelper
+    @Inject lateinit var fcmHelper: FcmHelper
 
     private val createSpaceResultLauncher = registerStartForActivityResult { activityResult ->
         if (activityResult.resultCode == Activity.RESULT_OK) {
@@ -190,7 +191,7 @@ class HomeActivity :
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, false)
         unifiedPushHelper.register(this) {
             if (unifiedPushHelper.isEmbeddedDistributor()) {
-                FcmHelper.ensureFcmTokenIsRetrieved(
+                fcmHelper.ensureFcmTokenIsRetrieved(
                         this,
                         pushManager,
                         vectorPreferences.areNotificationEnabledForDevice()
