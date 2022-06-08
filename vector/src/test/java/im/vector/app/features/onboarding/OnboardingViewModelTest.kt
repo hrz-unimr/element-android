@@ -528,7 +528,6 @@ class OnboardingViewModelTest {
                 .finish()
     }
 
-
     private fun viewModelWith(state: OnboardingViewState) {
         OnboardingViewModel(
                 state,
