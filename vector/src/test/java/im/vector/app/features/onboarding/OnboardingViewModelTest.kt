@@ -469,7 +469,7 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun `given reset state, when resending reset password email, then triggers reset password and emits nothing`() = runTest {
+    fun `given existing reset state, when resending reset password email, then triggers reset password and emits nothing`() = runTest {
         viewModelWith(initialState.copy(resetState = ResetState(AN_EMAIL, A_PASSWORD)))
         val test = viewModel.test()
         fakeLoginWizard.givenResetPasswordSuccess(AN_EMAIL)
@@ -489,7 +489,7 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun `given can successfully confirm reset password, when confirm reset password, then opens reset password complete`() = runTest {
+    fun `given combined login disabled, when confirming password reset, then opens reset password complete`() = runTest {
         viewModelWith(initialState.copy(resetState = ResetState(AN_EMAIL, A_PASSWORD)))
         val test = viewModel.test()
         fakeVectorFeatures.givenCombinedLoginDisabled()
@@ -509,7 +509,7 @@ class OnboardingViewModelTest {
     }
 
     @Test
-    fun `given can successfully confirm reset password, when confirm reset password, then emits reset password complete`() = runTest {
+    fun `given combined login enabled, when confirming password reset, then emits reset password complete`() = runTest {
         viewModelWith(initialState.copy(resetState = ResetState(AN_EMAIL, A_PASSWORD)))
         val test = viewModel.test()
         fakeVectorFeatures.givenCombinedLoginEnabled()
