@@ -131,7 +131,7 @@ class SpanUtilsTest : InstrumentedTest {
 
     private fun EmojiCompat.waitForInit() {
         val latch = CountDownLatch(1)
-	var thrown : Throwable? = null
+	var thrown: Throwable? = null
         registerInitCallback(object : EmojiCompat.InitCallback() {
             override fun onInitialized() = latch.countDown()
             override fun onFailed(throwable: Throwable?) {
