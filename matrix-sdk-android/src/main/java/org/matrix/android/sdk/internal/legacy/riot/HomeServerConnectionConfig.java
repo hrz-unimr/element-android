@@ -53,7 +53,7 @@ public class HomeServerConnectionConfig {
     // the anti-virus server URI
     private Uri mAntiVirusServerUri;
     // allowed fingerprints
-    private List<Fingerprint> mAllowedFingerprints = new ArrayList<>();
+    private final List<Fingerprint> mAllowedFingerprints = new ArrayList<>();
     // the credentials
     private Credentials mCredentials;
     // tell whether we should reject X509 certs that were issued by trusts CAs and only trustcerts with matching fingerprints.
@@ -397,7 +397,7 @@ public class HomeServerConnectionConfig {
      * Builder
      */
     public static class Builder {
-        private HomeServerConnectionConfig mHomeServerConnectionConfig;
+        private final HomeServerConnectionConfig mHomeServerConnectionConfig;
 
         /**
          * Builder constructor

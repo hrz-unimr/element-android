@@ -86,6 +86,6 @@ task unitTestsWithCoverage(type: GradleBuild) {
 
 task instrumentationTestsWithCoverage(type: GradleBuild) {
     startParameter.projectProperties.coverage = [enableTestCoverage:  true]
-    startParameter.projectProperties['android.testInstrumentationRunnerArguments.notPackage'] = 'im.vector.app.ui'
+    startParameter.projectProperties['android.testInstrumentationRunnerArguments.notPackage'] = 'im.vector.umr.ui'
     tasks = [':vector:connectedGplayDebugAndroidTest', 'matrix-sdk-android:connectedDebugAndroidTest']
 }

@@ -16,7 +16,7 @@
 
 @file:Suppress("UNUSED_PARAMETER")
 
-package im.vector.app.receivers
+package im.vector.umr.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context

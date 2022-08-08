@@ -1,5 +1,5 @@
 package ${escapeKotlinIdentifiers(packageName)}
 
-import im.vector.app.core.platform.VectorViewModelAction
+import im.vector.umr.core.platform.VectorViewModelAction
 
 sealed class ${actionClass}: VectorViewModelAction

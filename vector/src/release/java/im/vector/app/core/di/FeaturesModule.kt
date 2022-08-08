@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package im.vector.app.core.di
+package im.vector.umr.core.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import im.vector.app.features.DefaultVectorFeatures
-import im.vector.app.features.DefaultVectorOverrides
-import im.vector.app.features.VectorFeatures
-import im.vector.app.features.VectorOverrides
+import im.vector.umr.features.DefaultVectorFeatures
+import im.vector.umr.features.DefaultVectorOverrides
+import im.vector.umr.features.VectorFeatures
+import im.vector.umr.features.VectorOverrides
 
 @InstallIn(SingletonComponent::class)
 @Module

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package im.vector.app.fdroid.service
+package im.vector.umr.fdroid.service
 
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
-import im.vector.app.core.services.GuardServiceStarter
-import im.vector.app.features.settings.VectorPreferences
+import im.vector.umr.core.services.GuardServiceStarter
+import im.vector.umr.features.settings.VectorPreferences
 import timber.log.Timber
 import javax.inject.Inject
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package im.vector.app.fdroid.features.settings.troubleshoot
+package im.vector.umr.fdroid.features.settings.troubleshoot
 
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -21,9 +21,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.getSystemService
 import androidx.core.net.ConnectivityManagerCompat
 import androidx.fragment.app.FragmentActivity
-import im.vector.app.R
-import im.vector.app.core.resources.StringProvider
-import im.vector.app.features.settings.troubleshoot.TroubleshootTest
+import im.vector.umr.R
+import im.vector.umr.core.resources.StringProvider
+import im.vector.umr.features.settings.troubleshoot.TroubleshootTest
 import javax.inject.Inject
 
 class TestBackgroundRestrictions @Inject constructor(

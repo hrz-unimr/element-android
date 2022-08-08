@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.fdroid.receiver
+package im.vector.umr.fdroid.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context

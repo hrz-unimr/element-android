@@ -125,7 +125,7 @@ public final class LiveDataTestObserver<T> implements Observer<T> {
       T value = this.valueHistory.get(valueIndex);
       if (valuePredicate.apply(value)) {
         throw fail("Value at position " + valueIndex + " matches predicate "
-          + valuePredicate.toString() + ", which was not expected.");
+          + valuePredicate + ", which was not expected.");
       }
     }
 

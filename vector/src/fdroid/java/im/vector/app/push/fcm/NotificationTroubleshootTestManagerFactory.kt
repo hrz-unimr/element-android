@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package im.vector.app.push.fcm
+package im.vector.umr.push.fcm
 
 import androidx.fragment.app.Fragment
-import im.vector.app.core.pushers.UnifiedPushHelper
-import im.vector.app.fdroid.features.settings.troubleshoot.TestAutoStartBoot
-import im.vector.app.fdroid.features.settings.troubleshoot.TestBackgroundRestrictions
-import im.vector.app.fdroid.features.settings.troubleshoot.TestBatteryOptimization
-import im.vector.app.features.VectorFeatures
-import im.vector.app.features.settings.troubleshoot.NotificationTroubleshootTestManager
-import im.vector.app.features.settings.troubleshoot.TestAccountSettings
-import im.vector.app.features.settings.troubleshoot.TestAvailableUnifiedPushDistributors
-import im.vector.app.features.settings.troubleshoot.TestCurrentUnifiedPushDistributor
-import im.vector.app.features.settings.troubleshoot.TestDeviceSettings
-import im.vector.app.features.settings.troubleshoot.TestEndpointAsTokenRegistration
-import im.vector.app.features.settings.troubleshoot.TestNotification
-import im.vector.app.features.settings.troubleshoot.TestPushFromPushGateway
-import im.vector.app.features.settings.troubleshoot.TestPushRulesSettings
-import im.vector.app.features.settings.troubleshoot.TestSystemSettings
-import im.vector.app.features.settings.troubleshoot.TestUnifiedPushEndpoint
-import im.vector.app.features.settings.troubleshoot.TestUnifiedPushGateway
+import im.vector.umr.core.pushers.UnifiedPushHelper
+import im.vector.umr.fdroid.features.settings.troubleshoot.TestAutoStartBoot
+import im.vector.umr.fdroid.features.settings.troubleshoot.TestBackgroundRestrictions
+import im.vector.umr.fdroid.features.settings.troubleshoot.TestBatteryOptimization
+import im.vector.umr.features.VectorFeatures
+import im.vector.umr.features.settings.troubleshoot.NotificationTroubleshootTestManager
+import im.vector.umr.features.settings.troubleshoot.TestAccountSettings
+import im.vector.umr.features.settings.troubleshoot.TestAvailableUnifiedPushDistributors
+import im.vector.umr.features.settings.troubleshoot.TestCurrentUnifiedPushDistributor
+import im.vector.umr.features.settings.troubleshoot.TestDeviceSettings
+import im.vector.umr.features.settings.troubleshoot.TestEndpointAsTokenRegistration
+import im.vector.umr.features.settings.troubleshoot.TestNotification
+import im.vector.umr.features.settings.troubleshoot.TestPushFromPushGateway
+import im.vector.umr.features.settings.troubleshoot.TestPushRulesSettings
+import im.vector.umr.features.settings.troubleshoot.TestSystemSettings
+import im.vector.umr.features.settings.troubleshoot.TestUnifiedPushEndpoint
+import im.vector.umr.features.settings.troubleshoot.TestUnifiedPushGateway
 import javax.inject.Inject
 
 class NotificationTroubleshootTestManagerFactory @Inject constructor(

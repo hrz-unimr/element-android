@@ -9,8 +9,8 @@ import com.airbnb.mvrx.args
 import android.view.View
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
-import im.vector.app.R
-import im.vector.app.core.platform.VectorBaseFragment
+import im.vector.umr.R
+import im.vector.umr.core.platform.VectorBaseFragment
 import javax.inject.Inject
 
 <#if createFragmentArgs>

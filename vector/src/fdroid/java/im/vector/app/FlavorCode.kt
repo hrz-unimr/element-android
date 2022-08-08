@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app
+package im.vector.umr
 
 import android.content.Context
 

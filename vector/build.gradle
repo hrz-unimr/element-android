@@ -132,7 +132,7 @@ android {
     compileSdk versions.compileSdk
 
     defaultConfig {
-        applicationId "im.vector.app"
+        applicationId 'im.vector.umr'
         // Set to API 21: see #405
         minSdk versions.minSdk
         targetSdk versions.targetSdk

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package im.vector.app.di
+package im.vector.umr.di
 
 import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import im.vector.app.core.services.GuardServiceStarter
-import im.vector.app.fdroid.service.FDroidGuardServiceStarter
-import im.vector.app.features.settings.VectorPreferences
+import im.vector.umr.core.services.GuardServiceStarter
+import im.vector.umr.fdroid.service.FDroidGuardServiceStarter
+import im.vector.umr.features.settings.VectorPreferences
 
 @InstallIn(SingletonComponent::class)
 @Module

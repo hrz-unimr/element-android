@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.flipper
+package im.vector.umr.flipper
 
 import okhttp3.Interceptor
 import org.matrix.android.sdk.api.Matrix

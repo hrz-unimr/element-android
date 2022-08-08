@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package im.vector.app.nightly
+package im.vector.umr.nightly
 
 import javax.inject.Inject
 

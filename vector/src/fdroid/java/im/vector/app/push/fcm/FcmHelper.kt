@@ -15,14 +15,14 @@
  */
 @file:Suppress("UNUSED_PARAMETER")
 
-package im.vector.app.push.fcm
+package im.vector.umr.push.fcm
 
 import android.app.Activity
 import android.content.Context
-import im.vector.app.core.di.ActiveSessionHolder
-import im.vector.app.core.pushers.PushersManager
-import im.vector.app.fdroid.BackgroundSyncStarter
-import im.vector.app.fdroid.receiver.AlarmSyncBroadcastReceiver
+import im.vector.umr.core.di.ActiveSessionHolder
+import im.vector.umr.core.pushers.PushersManager
+import im.vector.umr.fdroid.BackgroundSyncStarter
+import im.vector.umr.fdroid.receiver.AlarmSyncBroadcastReceiver
 import javax.inject.Inject
 
 /**
