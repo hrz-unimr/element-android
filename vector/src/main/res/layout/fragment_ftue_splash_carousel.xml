@@ -58,6 +58,7 @@
 
     <Button
         android:id="@+id/loginSplashSubmit"
+        android:visibility="invisible"
         style="@style/Widget.Vector.Button.Login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
