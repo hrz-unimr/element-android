@@ -1,0 +1,8 @@
+Todo before deployment
+REFAKTOR VIA ANDROID STUDIO, REFACTOR FULL PROJECT; CLOSE; EXEC; OPEN; COMPILE
+
+Commands:
+
+export LC_CTYPE=C
+export LANG=C
+find ./ -type f -exec sed -i  -e s/im.vector.app/im.vector.umr/ {} ;
