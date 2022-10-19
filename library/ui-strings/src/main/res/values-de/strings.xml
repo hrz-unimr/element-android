@@ -2297,7 +2297,7 @@
     <string name="discovery_invite">Lade per E-Mail ein, finde deine Kontakte und mehr …</string>
     <string name="finish_setting_up_discovery">Schließe die Konfiguration des Auffindbarkeitsdienstes ab.</string>
     <string name="create_space_identity_server_info_none">Du verwendest derzeit keinen Identitäts-Server. Um Team-Mitglieder einzuladen und für sie auffindbar zu sein, konfiguriere zunächst einen.</string>
-    <string name="login_splash_already_have_account">Ich habe bereits ein Konto</string>
+    <string name="login_splash_already_have_account">Login</string>
     <string name="ftue_auth_carousel_encrypted_title">Sichere Kommunikation.</string>
     <string name="ftue_auth_carousel_secure_title">Besitze deine Unterhaltungen.</string>
     <string name="identity_server_consent_dialog_content_3">Um bestehende Kontakte ermitteln zu können, musst du Kontaktinformationen (E-Mail-Adressen und Telefonnummern) an deinen Identitäts-Server übermitteln. Deine Daten werden als Streuwert (Hash) übermittelt, um den Datenschutz zu gewährleisten.</string>
@@ -2565,7 +2565,7 @@
     <string name="auth_reset_password_error_unverified">E-Mail nicht bestätigt, prüfe deinen Posteingang</string>
     <string name="ftue_auth_welcome_back_title">Willkommen zurück!</string>
     <string name="ftue_auth_forgot_password">Passwort vergessen</string>
-    <string name="ftue_auth_login_username_entry">Nutzername / E-Mail-Adresse / Telefonnummer</string>
+    <string name="ftue_auth_login_username_entry">Universitäts Account</string>
     <string name="ftue_auth_create_account_title">Erstelle dein Konto</string>
     <string name="ftue_auth_choose_server_entry_hint">Server-URL</string>
     <string name="ftue_auth_choose_server_subtitle">Wie lautet die Adresse deines Servers\? Dies ist eine Art Zuhause für all deine Daten</string>

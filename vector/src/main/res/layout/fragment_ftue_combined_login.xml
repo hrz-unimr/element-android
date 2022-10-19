@@ -106,6 +106,7 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:text="@string/ftue_auth_create_account_edit_server_selection"
+            android:visibility="invisible"
             android:textAllCaps="true"
             app:layout_constraintBottom_toBottomOf="@id/selectedServerDescription"
             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
@@ -192,6 +193,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ftue_auth_forgot_password"
+            android:visibility="invisible"
             android:textAllCaps="true"
             android:textColor="?colorSecondary"
             app:layout_constraintBottom_toTopOf="@id/actionSpacing"
@@ -224,11 +226,11 @@
             android:id="@+id/ssoGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:constraint_referenced_ids="ssoButtonsHeader,ssoButtons"
             app:layout_constraintBottom_toTopOf="@id/ssoButtonsHeader"
             app:layout_constraintTop_toBottomOf="@id/loginSubmit"
-            tools:visibility="visible" />
+            tools:visibility="invisible" />
 
         <TextView
             android:id="@+id/ssoButtonsHeader"
@@ -238,6 +240,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/ftue_auth_create_account_sso_section_header"
+            android:visibility="invisible"
+            tools:visibility="invisible"
             android:textColor="?vctr_content_secondary"
             app:layout_constraintBottom_toTopOf="@id/ssoButtons"
             app:layout_constraintEnd_toEndOf="@id/loginGutterEnd"
@@ -260,6 +264,7 @@
 
         <im.vector.app.features.login.SocialLoginButtonsView
             android:id="@+id/ssoButtons"
+            android:visibility="invisible"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"

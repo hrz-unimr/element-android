@@ -67,11 +67,12 @@
         app:layout_constraintEnd_toEndOf="@id/splashCarouselGutterEnd"
         app:layout_constraintStart_toStartOf="@id/splashCarouselGutterStart"
         app:layout_constraintTop_toBottomOf="@id/loginSplashButtonsSpace"
-        tools:text="@string/login_splash_create_account" />
+        tools:text="@string/login_splash_create_account"
+        tools:visibility="invisible" />
 
     <Button
         android:id="@+id/loginSplashAlreadyHaveAccount"
-        style="@style/Widget.Vector.Button.Text.Login"
+        style="@style/Widget.Vector.Button.Login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/login_splash_already_have_account"

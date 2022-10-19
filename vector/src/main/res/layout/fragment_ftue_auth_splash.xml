@@ -179,6 +179,7 @@
 
     <Button
         android:id="@+id/loginSplashSubmit"
+        android:visibility="invisible"
         style="@style/Widget.Vector.Button.Login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -192,7 +193,7 @@
 
     <Button
         android:id="@+id/loginSplashAlreadyHaveAccount"
-        style="@style/Widget.Vector.Button.Text.Login"
+        style="@style/Widget.Vector.Button.Login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/login_splash_already_have_account"
