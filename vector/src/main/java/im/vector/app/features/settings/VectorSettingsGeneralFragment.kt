@@ -183,6 +183,7 @@ class VectorSettingsGeneralFragment :
         // Password
         // Hide the preference if password can not be updated
         if (homeServerCapabilities.canChangePassword) {
+            mPasswordPreference.isVisible = false
             mPasswordPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 onPasswordUpdateClick()
                 false
