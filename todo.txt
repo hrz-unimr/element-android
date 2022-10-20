@@ -5,4 +5,4 @@ Commands:
 
 export LC_CTYPE=C
 export LANG=C
-find ./ -type f -exec sed -i  -e s/im.vector.app/im.vector.umr/ {} ;
+find ./ -type f -exec sed -i '' -e "s/im.vector.app/im.vector.umr/" {} \;
