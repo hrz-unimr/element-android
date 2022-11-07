@@ -1,3 +1,4 @@
+include ':app'
 include ':vector-app'
 include ':vector'
 include ':vector-config'
