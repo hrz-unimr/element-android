@@ -16,22 +16,30 @@
 
 package im.vector.app.features.voicebroadcast.listening
 
+import im.vector.app.features.voicebroadcast.VoiceBroadcastFailure
+import im.vector.app.features.voicebroadcast.model.VoiceBroadcast
+
 interface VoiceBroadcastPlayer {
 
     /**
-     * The current playing voice broadcast identifier, if any.
+     * The current playing voice broadcast, if any.
      */
-    val currentVoiceBroadcastId: String?
+    val currentVoiceBroadcast: VoiceBroadcast?
 
     /**
-     * The current playing [State], [State.IDLE] by default.
+     * The current playing [State], [State.Idle] by default.
      */
     val playingState: State
 
     /**
+     * Tells whether the player is listening a live voice broadcast in "live" position.
+     */
+    val isLiveListening: Boolean
+
+    /**
      * Start playback of the given voice broadcast.
      */
-    fun playOrResume(roomId: String, voiceBroadcastId: String)
+    fun playOrResume(voiceBroadcast: VoiceBroadcast)
 
     /**
      * Pause playback of the current voice broadcast, if any.
@@ -44,37 +52,43 @@ interface VoiceBroadcastPlayer {
     fun stop()
 
     /**
-     * Seek to the given playback position, is milliseconds.
+     * Seek the given voice broadcast playback to the given position, is milliseconds.
      */
-    fun seekTo(positionMillis: Int)
+    fun seekTo(voiceBroadcast: VoiceBroadcast, positionMillis: Int, duration: Int)
 
     /**
-     * Add a [Listener] to the given voice broadcast id.
+     * Add a [Listener] to the given voice broadcast.
      */
-    fun addListener(voiceBroadcastId: String, listener: Listener)
+    fun addListener(voiceBroadcast: VoiceBroadcast, listener: Listener)
 
     /**
-     * Remove a [Listener] from the given voice broadcast id.
+     * Remove a [Listener] from the given voice broadcast.
      */
-    fun removeListener(voiceBroadcastId: String, listener: Listener)
+    fun removeListener(voiceBroadcast: VoiceBroadcast, listener: Listener)
 
     /**
      * Player states.
      */
-    enum class State {
-        PLAYING,
-        PAUSED,
-        BUFFERING,
-        IDLE
+    sealed interface State {
+        object Playing : State
+        object Paused : State
+        object Buffering : State
+        data class Error(val failure: VoiceBroadcastFailure.ListeningError) : State
+        object Idle : State
     }
 
     /**
      * Listener related to [VoiceBroadcastPlayer].
      */
-    fun interface Listener {
+    interface Listener {
         /**
          * Notify about [VoiceBroadcastPlayer.playingState] changes.
          */
-        fun onStateChanged(state: State)
+        fun onPlayingStateChanged(state: State) = Unit
+
+        /**
+         * Notify about [VoiceBroadcastPlayer.isLiveListening] changes.
+         */
+        fun onLiveModeChanged(isLive: Boolean) = Unit
     }
 }

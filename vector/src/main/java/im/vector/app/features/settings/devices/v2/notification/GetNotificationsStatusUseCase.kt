@@ -16,12 +16,13 @@
 
 package im.vector.app.features.settings.devices.v2.notification
 
-import im.vector.app.core.di.ActiveSessionHolder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import org.matrix.android.sdk.api.account.LocalNotificationSettingsContent
+import org.matrix.android.sdk.api.session.Session
 import org.matrix.android.sdk.api.session.accountdata.UserAccountDataTypes
 import org.matrix.android.sdk.api.session.events.model.toModel
 import org.matrix.android.sdk.flow.flow
@@ -29,32 +30,47 @@ import org.matrix.android.sdk.flow.unwrap
 import javax.inject.Inject
 
 class GetNotificationsStatusUseCase @Inject constructor(
-        private val activeSessionHolder: ActiveSessionHolder,
-        private val checkIfCanTogglePushNotificationsViaPusherUseCase: CheckIfCanTogglePushNotificationsViaPusherUseCase,
-        private val checkIfCanTogglePushNotificationsViaAccountDataUseCase: CheckIfCanTogglePushNotificationsViaAccountDataUseCase,
+        private val canToggleNotificationsViaPusherUseCase: CanToggleNotificationsViaPusherUseCase,
+        private val canToggleNotificationsViaAccountDataUseCase: CanToggleNotificationsViaAccountDataUseCase,
 ) {
 
-    fun execute(deviceId: String): Flow<NotificationsStatus> {
-        val session = activeSessionHolder.getSafeActiveSession()
-        return when {
-            session == null -> flowOf(NotificationsStatus.NOT_SUPPORTED)
-            checkIfCanTogglePushNotificationsViaAccountDataUseCase.execute(deviceId) -> {
-                session.flow()
-                        .liveUserAccountData(UserAccountDataTypes.TYPE_LOCAL_NOTIFICATION_SETTINGS + deviceId)
-                        .unwrap()
-                        .map { it.content.toModel<LocalNotificationSettingsContent>()?.isSilenced?.not() }
-                        .map { if (it == true) NotificationsStatus.ENABLED else NotificationsStatus.DISABLED }
-                        .distinctUntilChanged()
-            }
-            checkIfCanTogglePushNotificationsViaPusherUseCase.execute() -> {
-                session.flow()
-                        .livePushers()
-                        .map { it.filter { pusher -> pusher.deviceId == deviceId } }
-                        .map { it.takeIf { it.isNotEmpty() }?.any { pusher -> pusher.enabled } }
-                        .map { if (it == true) NotificationsStatus.ENABLED else NotificationsStatus.DISABLED }
-                        .distinctUntilChanged()
-            }
-            else -> flowOf(NotificationsStatus.NOT_SUPPORTED)
-        }
+    fun execute(session: Session, deviceId: String): Flow<NotificationsStatus> {
+        return canToggleNotificationsViaAccountDataUseCase.execute(session, deviceId)
+                .flatMapLatest { canToggle ->
+                    if (canToggle) {
+                        notificationStatusFromAccountData(session, deviceId)
+                    } else {
+                        notificationStatusFromPusher(session, deviceId)
+                    }
+                }
+                .distinctUntilChanged()
     }
+
+    private fun notificationStatusFromAccountData(session: Session, deviceId: String) =
+            session.flow()
+                    .liveUserAccountData(UserAccountDataTypes.TYPE_LOCAL_NOTIFICATION_SETTINGS + deviceId)
+                    .unwrap()
+                    .map { it.content.toModel<LocalNotificationSettingsContent>()?.isSilenced?.not() }
+                    .map { if (it == true) NotificationsStatus.ENABLED else NotificationsStatus.DISABLED }
+
+    private fun notificationStatusFromPusher(session: Session, deviceId: String) =
+            canToggleNotificationsViaPusherUseCase.execute(session)
+                    .flatMapLatest { canToggle ->
+                        if (canToggle) {
+                            session.flow()
+                                    .livePushers()
+                                    .map { it.filter { pusher -> pusher.deviceId == deviceId } }
+                                    .map { it.takeIf { it.isNotEmpty() }?.any { pusher -> pusher.enabled } }
+                                    .map {
+                                        when (it) {
+                                            true -> NotificationsStatus.ENABLED
+                                            false -> NotificationsStatus.DISABLED
+                                            else -> NotificationsStatus.NOT_SUPPORTED
+                                        }
+                                    }
+                                    .distinctUntilChanged()
+                        } else {
+                            flowOf(NotificationsStatus.NOT_SUPPORTED)
+                        }
+                    }
 }

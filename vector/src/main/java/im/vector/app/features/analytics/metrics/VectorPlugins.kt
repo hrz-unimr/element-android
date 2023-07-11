@@ -16,7 +16,9 @@
 
 package im.vector.app.features.analytics.metrics
 
+import im.vector.app.features.analytics.metrics.sentry.SentryCryptoAnalytics
 import im.vector.app.features.analytics.metrics.sentry.SentryDownloadDeviceKeysMetrics
+import im.vector.app.features.analytics.metrics.sentry.SentrySyncDurationMetrics
 import org.matrix.android.sdk.api.metrics.MetricPlugin
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,9 +29,11 @@ import javax.inject.Singleton
 @Singleton
 data class VectorPlugins @Inject constructor(
         val sentryDownloadDeviceKeysMetrics: SentryDownloadDeviceKeysMetrics,
+        val sentrySyncDurationMetrics: SentrySyncDurationMetrics,
+        val cryptoMetricPlugin: SentryCryptoAnalytics
 ) {
     /**
      * Returns [List] of all [MetricPlugin] hold by this class.
      */
-    fun plugins(): List<MetricPlugin> = listOf(sentryDownloadDeviceKeysMetrics)
+    fun plugins(): List<MetricPlugin> = listOf(sentryDownloadDeviceKeysMetrics, sentrySyncDurationMetrics)
 }
