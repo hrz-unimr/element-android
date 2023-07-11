@@ -167,7 +167,6 @@ android {
         buildConfigField "String", "GIT_REVISION", "\"${gitRevision()}\""
         buildConfigField "String", "GIT_REVISION_DATE", "\"${gitRevisionDate()}\""
         buildConfigField "String", "GIT_BRANCH_NAME", "\"${gitBranchName()}\""
-        buildConfigField "String", "BUILD_NUMBER", "\"${buildNumber}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
